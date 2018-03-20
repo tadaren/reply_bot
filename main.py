@@ -57,6 +57,9 @@ def message(event):
         with open('reply.json', 'w') as f:
             json.dump(reply, f)
         return
+    if text[0] == 'json':
+        line_api.reply_message(reply_token, json.dumps(reply))
+        return
 
 run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
 with open('reply.json', 'r') as f:

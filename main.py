@@ -50,6 +50,13 @@ def message(event):
     if text[0] in reply:
         line_api.reply_message(reply_token, reply[text[0]])
         return
+    text2 = text[0].split('=')
+    if len(text2) == 2 and len(text) == 1:
+        reply[text2[0]] = text2[1]
+        line_api.reply_message(reply_token, 'success')
+        with open('reply.json', 'w') as f:
+            json.dump(reply, f)
+        return
 
 run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
 with open('reply.json', 'r') as f:

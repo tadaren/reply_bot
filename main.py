@@ -52,4 +52,5 @@ def message(event):
         return
 
 run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
-reply = json.load(open('reply.json', 'r'))
+with open('reply.json', 'r') as f:
+    reply = json.load(f)

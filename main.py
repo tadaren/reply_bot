@@ -6,14 +6,7 @@ import line_api
 import os
 import db
 
-class SSLWebServer(ServerAdapter):
-    def run(self, handler):
-        from gevent.pywsgi import WSGIServer
-        srv = WSGIServer((self.host, self.port), handler,
-                         certfile=setting.CERT_FILE,
-                         keyfile=setting.KEY_FILE,
-                         ca_certs=setting.CA_FILE)
-        srv.serve_forever()
+reply = {}
 
 @post('/line_bot')
 def line_bot():
@@ -42,20 +35,19 @@ def message(event):
     text = event['message']['text'].split()
     reply_token = event['replyToken']
     if len(text) >= 3 and text[1] in ['->', '=', '==']:
-        reply[text[0]] = text[2]
         line_api.reply_message(reply_token, 'success')
         db.insert(text[0], text[2])
         return
-    if text[0] in reply:
-        reply = db.get_all()
-        line_api.reply_message(reply_token, reply[text[0]])
-        return
     text2 = text[0].split('=')
     if len(text2) == 2 and len(text) == 1:
-        reply[text2[0]] = text2[1]
         line_api.reply_message(reply_token, 'success')
         db.insert(text2[0], text2[1])
         return
+    reply = db.get_all()
+    if text[0] in reply:
+        line_api.reply_message(reply_token, reply[text[0]])
+        return
+    
     # if text[0] == 'json':
     #     line_api.reply_message(reply_token, json.dumps(reply))
     #     return

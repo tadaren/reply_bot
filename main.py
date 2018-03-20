@@ -4,6 +4,7 @@ from linebot import webhook
 import json
 import line_api
 import os
+import re
 import db
 
 reply = {}
@@ -34,11 +35,12 @@ def message(event):
         return
     text = event['message']['text'].split()
     reply_token = event['replyToken']
-    if len(text) >= 3 and text[1] in ['->', '=', '==']:
+    if len(text) >= 3 and text[1] in ['->', '=', '==', '＝']:
         line_api.reply_message(reply_token, 'success')
         db.insert(text[0], text[2])
         return
-    text2 = text[0].split('=')
+    # text2 = text[0].split('=')
+    text2 = re.split(r'[=,＝]', text[0])
     if len(text2) == 2 and len(text) == 1:
         line_api.reply_message(reply_token, 'success')
         db.insert(text2[0], text2[1])

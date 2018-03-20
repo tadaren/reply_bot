@@ -26,7 +26,7 @@ def line_bot():
     r = HTTPResponse(status=200, body=body)
     r.set_header('Content-Type', 'application/json')
 
-
+reply = {}
 
 def main(events):
     for event in events:

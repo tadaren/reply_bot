@@ -27,7 +27,6 @@ def line_bot():
     r = HTTPResponse(status=200, body=body)
     r.set_header('Content-Type', 'application/json')
 
-reply = {}
 
 def main(events):
     for event in events:
@@ -48,6 +47,7 @@ def message(event):
         db.insert(text[0], text[2])
         return
     if text[0] in reply:
+        reply = db.get_all()
         line_api.reply_message(reply_token, reply[text[0]])
         return
     text2 = text[0].split('=')
@@ -61,4 +61,3 @@ def message(event):
     #     return
 
 run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
-reply = db.get_all()

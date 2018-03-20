@@ -13,14 +13,6 @@ config = {
     }
 
 import psycopg2
-# connection = psycopg2.connect(host=config['HOST'], port=config['PORT'], database=config['NAME'], user=config['USER'], password=config['PASSWORD'])
-# cur = connection.cursor()
-# cur.execute("create table reply_map(key text not null, value text not null)")
-# cur.execute("insert into reply_map values('卍', 'ふとし')")
-# cur.execute("select * from reply_map")
-# for row in cur:
-    # print(row)
-# connection.commit()
 
 def get_all():
     connection = psycopg2.connect(host=config['HOST'], port=config['PORT'], database=config['NAME'], user=config['USER'], password=config['PASSWORD'])
@@ -34,5 +26,19 @@ def get_all():
 def insert(key, value):
     connection = psycopg2.connect(host=config['HOST'], port=config['PORT'], database=config['NAME'], user=config['USER'], password=config['PASSWORD'])
     cur = connection.cursor()
-    cur.execute("insert into reply_map values('{}', '{}')".format(key, value))
+    try:
+        cur.execute("insert into reply_map values('{}', '{}')".format(key, value))
+        connection.commit()
+    except:
+        pass
+
+if __name__ == '__main__':
+    connection = psycopg2.connect(host=config['HOST'], port=config['PORT'], database=config['NAME'], user=config['USER'], password=config['PASSWORD'])
+    cur = connection.cursor()
+    cur.execute("create table reply_map(key text not null unique, value text not null)")
+    # cur.execute("drop table reply_map")
+    # cur.execute("insert into reply_map values('卍', 'ふとし')")
+    # cur.execute("select * from reply_map")
+    # for row in cur:
+        # print(row)
     connection.commit()

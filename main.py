@@ -4,6 +4,7 @@ from linebot import webhook
 import json
 import line_api
 import os
+import db
 
 class SSLWebServer(ServerAdapter):
     def run(self, handler):
@@ -44,8 +45,7 @@ def message(event):
     if len(text) >= 3 and text[1] in ['->', '=', '==']:
         reply[text[0]] = text[2]
         line_api.reply_message(reply_token, 'success')
-        with open('reply.json', 'w') as f:
-            json.dump(reply, f)
+        db.insert(text[0], text[2])
         return
     if text[0] in reply:
         line_api.reply_message(reply_token, reply[text[0]])
@@ -54,13 +54,11 @@ def message(event):
     if len(text2) == 2 and len(text) == 1:
         reply[text2[0]] = text2[1]
         line_api.reply_message(reply_token, 'success')
-        with open('reply.json', 'w') as f:
-            json.dump(reply, f)
+        db.insert(text2[0], text2[1])
         return
-    if text[0] == 'json':
-        line_api.reply_message(reply_token, json.dumps(reply))
-        return
+    # if text[0] == 'json':
+    #     line_api.reply_message(reply_token, json.dumps(reply))
+    #     return
 
 run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
-with open('reply.json', 'r') as f:
-    reply = json.load(f)
+reply = db.get_all()

@@ -14,7 +14,7 @@ class SSLWebServer(ServerAdapter):
                          ca_certs=setting.CA_FILE)
         srv.serve_forever()
 
-@post('/')
+@post('/line_bot')
 def line_bot():
     signature = request.get_header('X-Line-Signature')
     body = request.body.read().decode('utf-8')

@@ -40,7 +40,7 @@ def message(event):
         db.insert(text[0], text[2])
         return
     # text2 = text[0].split('=')
-    text2 = re.split(r'[=,＝]', text[0])
+    text2 = re.split(r'[=＝]', text[0])
     if len(text2) == 2 and len(text) == 1:
         line_api.reply_message(reply_token, 'success')
         db.insert(text2[0], text2[1])

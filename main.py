@@ -44,10 +44,12 @@ def message(event):
     if len(text) >= 3 and text[1] in ['->', '=', '==']:
         reply[text[0]] = text[2]
         line_api.reply_message(reply_token, 'success')
+        with open('reply.json', 'w') as f:
+            json.dump(reply, f)
         return
     if text[0] in reply:
         line_api.reply_message(reply_token, reply[text[0]])
         return
 
 run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
-reply = json.load(open('reply.json'))
+reply = json.load(open('reply.json', 'r'))

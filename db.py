@@ -22,6 +22,7 @@ def get_all():
     for row in cur:
         out[row[0]] = row[1]
     connection.commit()
+    return out
 
 def insert(key, value):
     connection = psycopg2.connect(host=config['HOST'], port=config['PORT'], database=config['NAME'], user=config['USER'], password=config['PASSWORD'])

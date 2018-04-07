@@ -50,8 +50,5 @@ def message(event):
         line_api.reply_message(reply_token, reply[text[0]])
         return
     
-    # if text[0] == 'json':
-    #     line_api.reply_message(reply_token, json.dumps(reply))
-    #     return
 
 run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))

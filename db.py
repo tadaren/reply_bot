@@ -37,9 +37,4 @@ if __name__ == '__main__':
     connection = psycopg2.connect(host=config['HOST'], port=config['PORT'], database=config['NAME'], user=config['USER'], password=config['PASSWORD'])
     cur = connection.cursor()
     cur.execute("create table reply_map(key text not null unique, value text not null)")
-    # cur.execute("drop table reply_map")
-    # cur.execute("insert into reply_map values('卍', 'ふとし')")
-    # cur.execute("select * from reply_map")
-    # for row in cur:
-        # print(row)
     connection.commit()

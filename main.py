@@ -36,14 +36,14 @@ def message(event):
     text = event['message']['text'].split()
     reply_token = event['replyToken']
     if len(text) >= 3 and text[1] in ['->', '=', '==', '＝']:
-        line_api.reply_message(reply_token, 'success')
         db.insert(text[0], text[2])
+        line_api.reply_message(reply_token, 'success')
         return
     # text2 = text[0].split('=')
-    text2 = re.split(r'[=＝]', text[0])
-    if len(text2) == 2 and len(text) == 1:
-        line_api.reply_message(reply_token, 'success')
+    text2 = re.split(r'[=＝]', event['message']['text'])
+    if len(text2) >= 2 and len(text) == 1:
         db.insert(text2[0], text2[1])
+        line_api.reply_message(reply_token, 'success')
         return
     reply = db.get_all()
     if text[0] in reply:

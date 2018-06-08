@@ -41,7 +41,7 @@ def message(event):
         return
     # text2 = text[0].split('=')
     text2 = re.split(r'[=＝]', event['message']['text'])
-    if len(text2) >= 2 and len(text) == 1:
+    if len(text2) >= 2:
         db.insert(text2[0], text2[1])
         line_api.reply_message(reply_token, 'success')
         return

@@ -35,11 +35,12 @@ def message(event):
         return
     text = event['message']['text'].split()
     reply_token = event['replyToken']
+    if re.match(r'https?://[\w/:%#\$&\?\(\)~\.=\+\-]+', text):
+        return
     if len(text) >= 3 and text[1] in ['->', '=', '==', '＝']:
         db.insert(text[0], text[2])
         line_api.reply_message(reply_token, 'success')
         return
-    # text2 = text[0].split('=')
     text2 = re.split(r'[=＝]', event['message']['text'])
     if len(text2) >= 2:
         db.insert(text2[0], text2[1])
